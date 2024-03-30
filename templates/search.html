@@ -1,5 +1,38 @@
 {% extends "base.html" %} {% block content %}
 
 <h1>Search</h1>
+<div>
+    <div class="row">
+        {% if books|length > 0 %}
+            {% for book in books %}
+            <a class="col s10 offset-s1 m4 l3  brown lighten-4 book" href="{{ url_for('book_collection', book_id=book._id) }}">
+                <img src="{{ book.book_image_url }}" alt="cover image for {{ book.book_display_title}}">
+                <h5 class="center-align">{{ book.book_display_title }}</h5>
+                <p class="book-author center-align"><span>Author:</span> {{ book.book_author}}</p>
+                <div class="row">
+                
+                    <div class="col s6 center-align">
+                    {% if (book.book_review|length == 0 or book.book_review|length == 1) %}
+                        <i class="fas fa-feather teal-text"></i> {{ book.book_review|length}} review
+                    {% else %}
+                        <i class="fas fa-feather teal-text"></i> {{ book.book_review|length}} reviews
+                    {% endif %}
+                    </div>
+                        
+                    <div class="col s6 center-align">
+                    {% if (book.liked_by|length == 0 or book.liked_by|length == 1) %}
+                        <i class="fas fa-heart red-text"></i> {{ book.liked_by|length }} like
+                    {% else %}
+                        <i class="fas fa-heart red-text"></i> {{ book.liked_by|length }} likes
+                    {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        {% else %}
+            <h4 class="center-align no-results-message"><i class="fas fa-exclamation-circle"></i> No results found</h4>
+        {% endif %}
+    </div>
+</div>
 
 {%endblock%}

@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
-app.secret_key = os.environ.get("SECRET_KEY")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 # mongo = PyMongo(app)
 client = pymongo.MongoClient(os.environ.get("MONGO_URI"))
@@ -31,7 +31,6 @@ def index():
 def register():
     if request.method == "POST":
         # check if username already exists in database
-        print(request.form.get("username"))
 
         existing_user = db.users.find_one(
            {"username": request.form.get("username").lower()})
@@ -51,7 +50,7 @@ def register():
         return redirect(url_for("profile", username=session["user"]))
     return render_template("register.html")
 
-@app.route("/log_in")
+@app.route("/log_in", methods=["GET", "POST"])
 def log_in():
     if request.method == "POST":
         # check if the username exists
@@ -68,12 +67,11 @@ def log_in():
             else:
                 # invalid password 
                 flash("Incorrect username and/or password")
-                return redirect(url_for("login"))
-
+                return redirect(url_for("log_in"))
         else:
             # username does not exist
             flash("Incorrect username and/or password")
-            return redirect(url_for("login"))
+            return redirect(url_for("log_in"))
 
     return render_template("log_in.html")
 
@@ -82,7 +80,7 @@ def log_in():
 def profile():
     return render_template("profile.html")
 
-@app.route("/search")
+@app.route("/search", methods=["GET", "POST"])
 def search():
     return render_template("search.html")
 

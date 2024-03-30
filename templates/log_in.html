@@ -28,14 +28,17 @@
     </nav>
 
     <div class="form_wrapper">
-        <form method="GET">
+        <form method="POST" action="{{ url_for('log_in') }}" class="form_container">
           <h1>Login</h1>
           <div class="input-box">
-            <input type="text" placeholder="Username" name="username" id="username" required>
+            <input id="username" type="text" name="username" minlength="5" maxlength="20" pattern="^[a-zA-Z0-9_ ]{5,20}$"
+            class="form__input--textarea username__container" placeholder="Enter your name" required>
             <i class='bx bxs-user'></i>
           </div>
           <div class="input-box">
-            <input type="password" placeholder="Password" name="password" id="password" required>
+            <label for="password" class="form__input--label"></label>
+      <input id="password" type="password" name="password" placeholder="Enter password" class="form__input--textarea"
+        required>
             <i class='bx bxs-lock-alt' ></i>
           </div>
           <button type="submit" class="btn">Login</button>
@@ -44,6 +47,7 @@
           </div>
         </form>
       </div>
+
 
 
     <!-- Bootstrap core JS-->
