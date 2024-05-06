@@ -18,7 +18,7 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 # mongo = PyMongo(app)
 client = pymongo.MongoClient(os.environ.get("MONGO_URI"))
-db=client["book_chase"]
+db = client["book_chase"]
 print(db)
 
 @app.route("/")
@@ -30,8 +30,8 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        # check if username already exists in database
 
+        # check if username already exists in database
         existing_user = db.users.find_one(
            {"username": request.form.get("username").lower()})
         if existing_user:
@@ -64,24 +64,50 @@ def log_in():
                 session["user"] = request.form.get("username").lower()
                 flash("Welcome, {}".format(request.form.get("username")))
                 return redirect(url_for("profile", username=session["user"]))
+                
+    
             else:
                 # invalid password 
                 flash("Incorrect username and/or password")
                 return redirect(url_for("log_in"))
         else:
             # username does not exist
-            flash("Incorrect username and/or password")
+            flash("Incorrect username and/or password used")
             return redirect(url_for("log_in"))
 
     return render_template("log_in.html")
 
 
-@app.route("/profile", methods=["GET", "POST"])
-def profile():
-    return render_template("profile.html")
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
+    if request.method == "POST":
+        # Handle POST request (e.g., update profile)
+        pass
+
+    if 'user' in session:
+        # only let a logged in user edit their own profile page
+        current_user = session['user']
+        flash('Hi "' + current_user + '". This is your profile '
+              'page. You can view a summary of your reviews ')
+        # finding user based on login session
+        username = db.users.find_one({'username': current_user})
+        # setting db username to the current session username
+        reviews = db.reviews.find({'username': current_user})
+        count = db.reviews.count_documents({'username': current_user})
+        return render_template("profile.html",
+                               reviews=reviews,
+                               title='My Profile',
+                               user=username,
+                               count=count)
+    else:
+        # if user is not logged in
+        flash('You need to be logged in to see your profile', 'warning')
+        return render_template('log_in.html')
+    
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
+    
     return render_template("search.html")
 
 

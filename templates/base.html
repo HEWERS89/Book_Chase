@@ -24,6 +24,7 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('index') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('search') }}">Search</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('log_in') }}">Log In</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
             </div>
         </div>
     </nav>
@@ -92,7 +93,7 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; Book Chase 2024</div>
                 </div>
             </div>
         </div>
