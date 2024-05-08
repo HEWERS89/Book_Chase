@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 
 {% block content %}
@@ -6,58 +6,62 @@
 <div class="card mb-4">
     <div class="form_wrapper">
         <form method="POST" action="{{ url_for('profile', username=user) }}" class="form_container">
-    <div class="card-header reviewer"><span class="review-title "></span>
-    </div>
-    <div class="card-body">
-      <!--message user if they have no reivews-->
-        {% if count == 0 %}
-        <strong>You currently have no reviews</strong>
-        {% endif %}
-        <!--display all reviews owned by user -->
-        {% for review in reviews %}
-        <div class="row mb-4">
-
-            <div class="col-12 col-sm-6"><span class="text-capitalize"> {{review.book_title }} by {{ review.author}}
-
-                </span>
+            <div class="card-header reviewer"><span class="review-title "></span>
             </div>
-            <!--link to view full reivew-->
-            <div class="col-12 col-sm-6">
-                <a class="btn btn-info" target="_blank" href=" {{ url_for('review', id=review._id ) }} ">View Review</a>
+            <div class="card-body">
+                <!--message user if they have no reivews-->
+                {% if count == 0 %}
+                <strong>You currently have no reviews</strong>
+                {% endif %}
+                <!--display all reviews owned by user -->
+                {% for review in reviews %}
+                <div class="row mb-4">
+
+                    <div class="col-12 col-sm-6"><span class="text-capitalize"> {{review.book_title }} by
+                            {{ review.author}}
+
+                        </span>
+                    </div>
+                    <!--link to view full reivew-->
+                    <div class="col-12 col-sm-6">
+                        <a class="btn btn-info" target="_blank" href=" {{ url_for('review', id=review._id ) }} ">View
+                            Review</a>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card-body">
+                <!--message user if they have no reivews-->
+                {% if count == 0 %}
+                <strong>You currently have no reviews</strong>
+                {% endif %}
+                <!--display all reviews owned by user -->
+                {% for review in reviews %}
+                <div class="row mb-4">
+
+                    <div class="col-12 col-sm-6"><span class="text-capitalize"> {{review.book_title }} by
+                            {{ review.author}}
+
+                        </span>
+                    </div>
+                    <!--link to view full reivew-->
+                    <div class="col-12 col-sm-6">
+                        <a class="btn btn-info" target="_blank" href=" {{ url_for('review', id=review._id ) }} ">
+                            View Review
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+
             </div>
         </div>
-        {% endfor %}
-
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-    
-    <div class="card-body">
-      <!--message user if they have no reivews-->
-        {% if count == 0 %}
-        <strong>You currently have no reviews</strong>
-        {% endif %}
-        <!--display all reviews owned by user -->
-        {% for review in reviews %}
-        <div class="row mb-4">
-
-            <div class="col-12 col-sm-6"><span class="text-capitalize"> {{review.book_title }} by {{ review.author}}
-
-                </span>
-            </div>
-            <!--link to view full reivew-->
-            <div class="col-12 col-sm-6">
-                <a class="btn btn-info" target="_blank" href=" {{ url_for('review', id=review._id ) }} ">View Review</a>
-            </div>
-        </div>
-        {% endfor %}
-
-    </div>
-</div>
 
 
 
-{% endblock %}
-
+        {% endblock %}

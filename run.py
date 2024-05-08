@@ -94,11 +94,13 @@ def profile(username):
         # setting db username to the current session username
         reviews = db.reviews.find({'username': current_user})
         count = db.reviews.count_documents({'username': current_user})
-        return render_template("profile.html",
-                               reviews=reviews,
-                               title='My Profile',
-                               user=username,
-                               count=count)
+        return render_template(
+            "profile.html",
+            reviews=reviews,
+            title='My Profile',
+            user=username,
+            count=count
+        )
     else:
         # if user is not logged in
         flash('You need to be logged in to see your profile', 'warning')
