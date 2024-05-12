@@ -29,6 +29,19 @@
       </div>
     </div>
   </nav>
+<!-- flash messages -->
+<aside class="flash__messages--container">
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="flash__messages">
+    {% for message in messages %}
+    <div class="flash__message">
+        <div class="flash__message--content">{{ message }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
 
   <div class="form_wrapper">
     <form method="POST" action="{{ url_for('register') }}" class="form__container">

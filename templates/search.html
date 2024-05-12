@@ -44,15 +44,16 @@
     </div>
 
     <ol>
-        {% for book in result %}
-        <br>
-        <li>
-            <h5>
-                <a href="{{ url_for('book', isbn = book.isbn) }}"> {{ book.title }} </a>
-                by {{ book.author }}
-            </h5>
-        </li>
-        {% endfor %}
+            <h1>Search Results</h1>
+            <ul>
+                {% for book in books %}
+                    <li>
+                        <h3>{{ book.title }}</h3>
+                        <p>by {{ book.author }}</p>
+                        <p>ISBN: {{ book.isbn }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
     </ol>
 </div>
 

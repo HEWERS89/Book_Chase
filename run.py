@@ -88,7 +88,7 @@ def profile(username):
         # only let a logged in user edit their own profile page
         current_user = session['user']
         flash('Hi "' + current_user + '". This is your profile '
-              'page. You can view a summary of your reviews ')
+            'page. You can view a summary of your reviews ')
         # finding user based on login session
         username = db.users.find_one({'username': current_user})
         # setting db username to the current session username
@@ -105,23 +105,32 @@ def profile(username):
         # if user is not logged in
         flash('You need to be logged in to see your profile', 'warning')
         return render_template('log_in.html')
+
     
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
-    
+    """
+        Search books within title, author or isbn
+    """
+    if request.method == "POST":
+        query = request.form.get('search')
+        if not query or query.strip() == '':
+            flash('Please enter a search query.')
+            return redirect(url_for('search'))
+
+        books = list(db.books.find({"$or": [{"author": query}, {"title": query}, {"isbn": query}]}))
+        if books:
+            return render_template("search.html", books=books)
+        else:
+            flash("No books found.")
     return render_template("search.html")
-
-
-
-
-
 
 if  __name__ == "__main__":
     app.run(
         host=os.environ.get("IP"),
         port=int(os.environ.get("PORT")),
         debug=True
-              )
+            )
 
 
