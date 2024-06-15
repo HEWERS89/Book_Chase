@@ -4748,6 +4748,7 @@ fieldset:disabled .btn {
 .progress-bar-animated {
   animation: 1s linear infinite progress-bar-stripes;
 }
+
 @media (prefers-reduced-motion: reduce) {
   .progress-bar-animated {
     animation: none;
@@ -4865,6 +4866,37 @@ fieldset:disabled .btn {
     border-left-width: var(--bs-list-group-border-width);
   }
 }
+
+/*.book__rating*/
+input[type="checkbox"]:checked,
+input:checked[type="checkbox"]::before,
+input:checked[type="checkbox"]::after {
+    background-color: red;
+}
+
+[type="checkbox"]:checked+span:not(.lever):before{
+    display: none;
+}
+
+[type="checkbox"]:not(:checked), 
+[type="checkbox"]:checked {
+    opacity: 1;
+    transform: rotate(45deg);
+    border-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+[type="checkbox"]+span:not(.lever):before, 
+[type="checkbox"]:not(.filled-in)+span:not(.lever):after{
+    display: none;
+}
+
+.container-heart-section{
+    position: relative;
+}
+
 @media (min-width: 768px) {
   .list-group-horizontal-md {
     flex-direction: row;
@@ -11136,4 +11168,8 @@ header.masthead .post-heading .meta a {
   .post-preview > a > .post-title {
     font-size: 2.25rem;
   }
+}
+
+p.book-title { 
+  margin: 0;
 }

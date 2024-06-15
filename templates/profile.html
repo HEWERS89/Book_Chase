@@ -1,43 +1,82 @@
 {% extends "base.html" %}
 
-
 {% block content %}
-
 <div class="card mb-4">
-    <div class="form_wrapper">
-        <form method="POST" action="{{ url_for('profile', username=user) }}" class="form_container">
-            <div class="card-header reviewer"><span class="review-title "></span>
-            </div>
-            
+<div class="form_wrapper">
+    <div class="card-header reviewer">
+    <h2>My Reviews</h2>
+    </div>
     <div class="row">
-        <div class="col-12">
-
-            <div class="card-body">
-                <!--message user if they have no reivews-->
-                {% if count == 0 %}
-                <strong>You currently have no reviews</strong>
-                {% endif %}
-                <!--display all reviews owned by user -->
-                {% for review in reviews %}
-                <div class="row mb-4">
-
-                    <div class="col-12 col-sm-6"><span class="text-capitalize"> {{review.book_title }} by
-                            {{ review.author}}
-
-                        </span>
-                    </div>
-                    <!--link to view full reivew-->
-                    <div class="col-12 col-sm-6">
-                        <a class="btn btn-info" target="_blank" href=" {{ url_for('review', id=review._id ) }} ">
-                            View Review
-                        </a>
-                    </div>
+    <div class="col-12">
+        <div class="card-body">
+        {% if count == 0 %}
+        <strong>You currently have no reviews</strong>
+        {% endif %}
+        {% for review in book_reviews %}
+        <div class="review-container mb-4">
+            <div class="row">
+            <div class="col-12 col-sm-8">
+                <span class="text-capitalize">
+                <div>
+                    <h4>{{ review.book_title }}</h4>
+                    <p>{{ review.comment }}</p>
                 </div>
-                {% endfor %}
-
+                </span>
+            </div>
+            <div class="col-12 col-sm-4">
+                <form action="{{ url_for('edit_review', review_id=review.review_id) }}" method="GET">
+                <button type="submit" class="btn btn-primary">Edit Review</button>
+                </form>
+                <form action="{{ url_for('delete_review', review_id=review.review_id) }}" method="POST">
+                <input type="submit" value="Delete Review" class="btn btn-danger">
+                </form>
+            </div>
             </div>
         </div>
+        {% endfor %}
+        </div>
+    </div>
+    </div>
+</div>
+</div>
 
-
-
-        {% endblock %}
+<div class="card mb-4">
+<div class="form_wrapper">
+    <div class="card-header reviewer">
+    <h2>My Books</h2>
+    </div>
+    <div class="row">
+    <div class="col-12">
+        <div class="card-body">
+        {% if book_count == 0 %}
+        <strong>You currently have no books</strong>
+        {% endif %}
+        {% for book in user_books %}
+        <div class="book-container mb-4">
+            <div class="row">
+                <div class="col-12 col-sm-8">
+                    <span class="text-capitalize">
+                    <div>
+                        <h4>{{ book.title }}</h4>
+                        <p>Author: {{ book.author }}</p>
+                        <p>ISBN: {{ book.isbn }}</p>
+                    </div>
+                    </span>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <form action="{{ url_for('edit_book', book_id=book.book_id) }}" method="GET">
+                        <button type="submit" class="btn btn-primary">Edit Book</button>
+                    </form>
+                    <form action="{{ url_for('delete_book', book_id=book.book_id) }}" method="POST">
+                        <input type="submit" value="Delete Book" class="btn btn-danger">
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+{% endblock %}

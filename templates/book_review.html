@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h1 class="display-4">{{ book.title|title }}</h1>
+                    <p class="lead">by {{ book.author|title }}</p>
+                    <p>ISBN: {{ book.isbn }}</p>
+                    <hr>
+
+                    <h2 class="mt-4">Reviews:</h2>
+                    <ul class="list-unstyled">
+                        {% for review in reviews %}
+                            <li class="mb-3">
+                                <h5 class="mt-0">{{ review.username|title }}</h5>
+                                {{ review.comment }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <h2 class="mt-4">Leave a Review:</h2>
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <textarea name="comment" class="form-control" placeholder="Enter your review" rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
