@@ -1,5 +1,8 @@
+# Book Chase
 
-# User Stories for Book Reviews
+![BookChase](/static/documentation/home_page.png)
+
+## User Stories for Book Reviews
 
 As a registered user, I want to be able to write and publish a book review so that I can share my thoughts and opinions about a book with others.
 Acceptance Criteria:
@@ -25,10 +28,6 @@ Each review includes the user's username and their associated review.
 ## Features:
 User functionality: Functionality for users to create, locate, display, edit and delete records.
 
-## Design:
-
-## Colour scheme:
-
 ## Deployment
 The site was deployed to GitHub.
 
@@ -44,36 +43,8 @@ git clone https://hewers89.github.io/Book_Chase/
 
 ## Testing
 
-### Light House
-
-- Login Page [Desktop]
-  [Mobile]
-- Home Page [Desktop]
-  [Mobile]
-- Add Book Page [Desktop]
-  [Mobile]
-- Search Page [Desktop]
-  [Mobile]
-- Profile Page [Desktop]
-  [Mobile]
-
-
-### Chrome Responsive Viewer
-
-- Login Page [Desktop]
-  [Mobile]
-- Home Page [Desktop]
-  [Mobile]
-- Add Book Page [Desktop]
-  [Mobile]
-- Search Page [Desktop]
-  [Mobile]
-- Profile Page [Desktop]
-  [Mobile]
 
 ### Manual Testing
-
-# **Testing**
 
 
 |             | User Action | Expected result  | Y/N | Comment |
@@ -115,18 +86,38 @@ git clone https://hewers89.github.io/Book_Chase/
 
 ### Validator
 
-[Javascript]()
+### HTML
+Html validator doesn't recognise {% extends 'base.html' %}
+{% block content %} or url_for
 
-[HTML]()
+[Add Book](/static/documentation/html_validator_add_book.png)
 
-[CSS]()
+[Edit Book](static/documentation/Html_validator_edit_book.png)
 
-## Bugs
+[Edit Review](static/documentation/Html_validator_edit_review.png)
 
-The answers were duplicating instead of moving to the next question, this was due to a +1 i added to questions in javascript once removed this stopped the duplication.
+ [Home Page](static/documentation/Html_validator_index.png)
 
-The reset button didn't reset the question counting, I passed the value of 0 to reset the counter at the click of reset. 
+[Login](static/documentation/Html_validator_log_in.png)
 
+[Profile](static/documentation/Html_validator_profile.png)
+
+[Register](static/documentation/Html_validator_register.png)
+
+[Search](static/documentation/Html_validator_search.png)
+
+
+### CSS
+[Login](static/documentation/Validator_CSS_Login.png)
+
+I have not included the clean-blog.css as this is a bootstrap file.
+
+### Lighthouse
+All pages where manually tested on google chrome for example:
+
+[Login Desktop](static/documentation/Lighthouse_login_desktop.png)
+
+[Login Mobile](static/documentation/Lighthouse_login_mobile.png)
 
 ## Languages
 
@@ -138,17 +129,21 @@ The reset button didn't reset the question counting, I passed the value of 0 to 
 
 [Flexbox](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox) to arrange items and make them responsive.
 
-[VScode](https://code.visualstudio.com/) used as my tool for writing and editing code.
+[Python](https://www.python.org/doc/essays/blurb/) Python is an interpreted, object-oriented, high-level programming language
+
+[Flask](https://pythonbasics.org/what-is-flask-python/) Flask is a micro web framework written in Python.
+
+## Frameworks
+
+ [Mongo DB](https://www.mongodb.com/) was used to store the data.
+
+ [Chrome DevTools](https://developer.chrome.com/docs/devtools/open/) was used to debug the website.
 
 [Github](https://github.com/) used to host the code of the website.
 
 [Gitpod](https://www.gitpod.io/) an open source CDE
 
-[Python] 
-
-[Flask]
-
-
+[Heroku](https://www.heroku.com/) Heroku is a platform as a service (PaaS)
 
 ## Hero Image
 #### Background image used available via this [link](https://www.pexels.com/photo/books-in-black-wooden-book-shelf-159711/)
