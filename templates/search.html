@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
@@ -11,24 +10,22 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="option1" value="option1"
                                 required>
-                            <label class="form-check-label" for="inlineRadio1"> Search by Title </label>
+                            <label class="form-check-label" for="option1"> Search by Title </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="option2" value="option2"
                                 required>
-                            <label class="form-check-label" for="inlineRadio2"> Search by ISBN </label>
+                            <label class="form-check-label" for="option2"> Search by ISBN </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="option3" value="option3"
                                 required>
-                            <label class="form-check-label" for="inlineRadio3">Search by Author name</label>
+                            <label class="form-check-label" for="option3">Search by Author name</label>
                         </div>
-
                         <div class="form-group">
-                            <label for="exampleInputEmail1">
-                                <h3>Search for Books</h3>
-                            </label>
-                            <input type="text" class="form-control" name="search" placeholder="Title, ISBN, or Author">
+                            <h3>Search for Books</h3>
+                            <input type="text" class="form-control" id="search-input" name="search" placeholder="Title, ISBN, or Author">
+                            <label for="search-input"></label>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Search</button>
                     </form>
@@ -36,28 +33,27 @@
             </div>
         </div>
     </div>
-
     <div class="row justify-content-center">
         <div class="col-md-8">
             {% if show_results %}
                 <div class="card mb-4">
                     <div class="card-body">
                         <h1 class="text-center">Search Results</h1>
-                        <ul class="list-unstyled">
+                        {% if books %}
                             {% for book in books %}
-                            <li class="mb-3">
-                                <h3><a href="{{ url_for('book_review', book_id=book._id) }}">{{ book.title|title }}</a></h3>
-                                <p>by {{ book.author|title }}</p>
-                                <p>ISBN: {{ book.isbn }}</p>
-                            </li>
+                                <div>
+                                    <h3><a href="{{ url_for('book_review', book_id=book._id)}}">{{ book.title|title }}</a></h3>
+                                    <p>by {{ book.author|title }}</p>
+                                    <p>ISBN: {{ book.isbn }}</p>
+                                </div>
                             {% endfor %}
-                        </ul>
+                        {% else %}
+                            {{ flash_message }} 
+                        {% endif %}
                     </div>
                 </div>
-            {% else %}
             {% endif %}
         </div>
     </div>
 </div>
-
 {% endblock %}

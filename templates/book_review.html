@@ -12,7 +12,7 @@
                     <hr>
 
                     <h2 class="mt-4">Reviews:</h2>
-                    <ul class="list-unstyled">
+                    <ul>
                         {% for review in reviews %}
                             <li class="mb-3">
                                 <h5 class="mt-0">{{ review.username|title }}</h5>
@@ -22,7 +22,7 @@
                     </ul>
 
                     <h2 class="mt-4">Leave a Review:</h2>
-                    <form action="" method="post">
+                    <form method="POST" action="{{ url_for('book_review', book_id=book['_id']) }}">
                         <div class="form-group">
                             <textarea name="comment" class="form-control" placeholder="Enter your review" rows="5"></textarea>
                         </div>

@@ -10,8 +10,7 @@ from bson.objectid import ObjectId
 if os.path.exists("env.py"):
     import env
 
-
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
@@ -20,6 +19,7 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 client = pymongo.MongoClient(os.environ.get("MONGO_URI"))
 db = client["book_chase"]
 books = db["books"]
+books_collection = db['books']
 reviews = db["reviews"] 
 
 
@@ -73,13 +73,10 @@ def log_in():
 
         if existing_user:
             # authorise password with username provided
-            if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
+            if check_password_hash(existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
                 flash("Welcome, {}".format(request.form.get("username")))
                 return redirect(url_for("profile", username=session["user"]))
-                
-    
             else:
                 # invalid password 
                 flash("Incorrect username and/or password")
@@ -100,12 +97,23 @@ def logout():
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if request.method == "POST":
-        query = request.form.get('search')
-        if not query or query.strip() == '':
-            flash('Please enter a search query.')
-            return redirect(url_for('search'))
+        search_query = request.form.get('search')
+        search_field = request.form.get('inlineRadioOptions')
 
-        books = list(db.books.find({"$or": [{"title": {"$regex": query, "$options": "i"}}, {"author": {"$regex": query, "$options": "i"}}, {"isbn": {"$regex": query, "$options": "i"}}]}))
+        if not search_query or search_query.strip() == '':
+            flash('Please enter a search query.')
+            return render_template("search.html", show_results=False)
+
+        if search_field == 'option1':
+            books = list(db.books.find({"title": {"$regex": search_query, "$options": "i"}}))
+        elif search_field == 'option2':
+            books = list(db.books.find({"isbn": {"$regex": search_query, "$options": "i"}}))
+        elif search_field == 'option3':
+            books = list(db.books.find({"author": {"$regex": search_query, "$options": "i"}}))
+        else:
+            flash('Invalid search field.')
+            return render_template("search.html", show_results=False)
+
         if books:
             return render_template("search.html", books=books, show_results=True)
         else:
@@ -191,12 +199,12 @@ def delete_review(review_id):
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     if request.method == "POST":
-        # Handle POST request
+        # Handle POST request (e.g., update profile)
         pass
 
     if "user" in session:
         current_user = session["user"]
-        if current_user != username:
+        if current_user!= username:
             flash("You can only view your own profile", "warning")
             return redirect(url_for("log_in"))
 
@@ -214,37 +222,49 @@ def profile(username):
                 review_id = review["_id"]
                 book_reviews.append({"book_title": book_title, "comment": comment, "review_id": review_id})
 
-    user_books = []
-    if "books" in user:
-        for book_id in user["books"]:
-            book = db.books.find_one({"_id": ObjectId(book_id)})
-            if book:
-                title = book["title"]
-                author = book["author"]
-                isbn = book["isbn"]
-                user_books.append({"book_id": book_id, "title": title, "author": author, "isbn": isbn})
+        user_books = []
+        if "books" in user:
+            for book_id in user["books"]:
+                book = db.books.find_one({"_id": ObjectId(book_id)})
+                if book:
+                    title = book["title"]
+                    author = book["author"]
+                    isbn = book["isbn"]
+                    user_books.append({"book_id": book_id, "title": title, "author": author, "isbn": isbn})
 
-        user_books.sort(key=lambda x: x['book_id'], reverse=True)
+            user_books.sort(key=lambda x: x['book_id'], reverse=True)
 
+        flash('Hi "' + current_user + '". This is your profile ''page. You can view a summary of your reviews ')
         return render_template(
-        "profile.html",
-        book_reviews=book_reviews,
-        user_books=user_books,
-        title="My Profile",
-        user=user,
-        count=count,
-        book_count=len(user_books))
-
+            "profile.html",
+            book_reviews=book_reviews,
+            user_books=user_books,
+            title="My Profile",
+            user=user,
+            count=count,
+            book_count=len(user_books)
+        )
     else:
         flash("You need to be logged in to see your profile", "warning")
         return redirect(url_for("log_in"))
 
+
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
+    if not authenticated_user():
+        flash("You need to be logged in to add a book", "warning")
+        return redirect(url_for("log_in"))
+
     if request.method == "POST":
         title = request.form.get('title')
         author = request.form.get('author')
         isbn = request.form.get('isbn')
+
+        # Validate user input
+        if not title or not author or not isbn:
+            flash("Please fill in all fields")
+            return redirect(url_for("add_book"))
+
         # Check if the book already exists in the database
         existing_book = db.books.find_one({"$and": [{"title": title}, {"author": author}, {"isbn": isbn}]})
 
@@ -266,8 +286,8 @@ def add_book():
             return redirect(url_for('index'))
         else:
             flash("Book already exists in the collection.")
-    return render_template("add_book.html")
-
+    return render_template("add_book.html", add_book_url=url_for('add_book'))
+    
 @app.route('/edit_book/<book_id>', methods=['GET', 'POST'])
 def edit_book(book_id):
     if request.method == 'GET':
@@ -302,7 +322,7 @@ if  __name__ == "__main__":
     app.run(
         host=os.environ.get("IP"),
         port=int(os.environ.get("PORT")),
-        debug=True
+        debug=False
             )
 
 
